@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment2")
@@ -28,5 +29,5 @@ public class Comment {
 
     @Column(name = "updated_date", insertable = false, updatable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp updatedDate;
+    private LocalDateTime updatedDate;
 }

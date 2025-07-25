@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -22,10 +23,10 @@ public class ForumController {
      * 投稿内容表示処理
      */
     @GetMapping
-    public ModelAndView top() {
+    public ModelAndView top(@RequestParam(name = "startDate", required = false) String startDate, @RequestParam(name = "endDate", required = false) String endDate)throws ParseException {
         ModelAndView mav = new ModelAndView();
         // 投稿を全件取得
-        List<ReportForm> contentData = reportService.findAllReport();
+        List<ReportForm> contentData = reportService.findReport(startDate, endDate);
         //コメントを取得
         List<CommentForm> commentData = commentService.findAllComment();
         // form用の空のentityを準備(コメント用)
@@ -113,6 +114,46 @@ public class ForumController {
     public ModelAndView addComment(@ModelAttribute("formModel") CommentForm commentForm){
         // 投稿をテーブルに格納
         commentService.saveComment(commentForm);
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     *コメントの編集画面表示
+     */
+    @GetMapping("/editComment/{id}")
+    public ModelAndView editComment(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        //編集する投稿を取得
+        CommentForm comment = commentService.editComment(id);
+        // 編集内容を保管
+        mav.addObject("formModel", comment);
+        // 画面遷移先を指定
+        mav.setViewName("/editComment");
+        return mav;
+    }
+
+    /*
+     * コメント編集処理
+     */
+    @PutMapping("/updateComment/{id}")
+    public ModelAndView updateComment (@PathVariable Integer id,
+                                       @ModelAttribute("formModel") CommentForm comment) {
+        // UrlParameterのidを更新するentityにセット
+        comment.setId(id);
+        // 編集した投稿を更新
+        commentService.saveComment(comment);
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * コメントの削除
+     */
+    @DeleteMapping("/deleteComment/{id}")
+    public ModelAndView deleteComment(@PathVariable Integer id) {
+        // 投稿をテーブルに格納
+        commentService.deleteComment(id);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }

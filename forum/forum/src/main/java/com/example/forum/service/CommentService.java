@@ -6,6 +6,8 @@ import com.example.forum.repository.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class CommentService {
             comment.setId(result.getId());
             comment.setComment(result.getComment());
             comment.setContentId(result.getContentId());
+            comment.setCreatedDate(result.getCreatedDate());
             comments.add(comment);
         }
         return comments;
@@ -56,6 +59,24 @@ public class CommentService {
         comment.setId(reqComment.getId());
         comment.setComment(reqComment.getComment());
         comment.setContentId(reqComment.getContentId());
+        comment.setUpdatedDate(LocalDateTime.now());//現在日時を設定する
         return comment;
+    }
+
+    /*
+     * 編集するコメントを１件取得
+     */
+    public CommentForm editComment(Integer id) {
+        List<Comment> results = new ArrayList<>();
+        results.add((Comment) commentRepository.findById(id).orElse(null)); //nullかもしれない（optional）
+        List<CommentForm> comments = setCommentForm(results);
+        return comments.get(0);
+    }
+
+    /*
+     *投稿の削除
+     */
+    public void deleteComment(Integer id) {
+        commentRepository.deleteById(id);
     }
 }
