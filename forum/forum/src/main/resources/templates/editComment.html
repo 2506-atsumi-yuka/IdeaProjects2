@@ -9,6 +9,12 @@
 <div class="header-comments">
   <h2>コメント編集</h2>
 </div>
+<!-- エラーメッセージ -->
+<div class="error-massage">
+  <ul>
+    <li><span th:text="${errorMessages}"/></li>
+  </ul>
+</div>
 <div class="edit-comments">
   <form th:action="@{/updateComment/{id}(id=${formModel.id})}" th:object="${formModel}" th:method="put">
     <div class="edit-area">

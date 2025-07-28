@@ -44,6 +44,14 @@
                 <input type="button" value="編集">
             </a>
         </div>
+        <!--エラーメッセージ -->
+        <div class="error-massage">
+            <div th:if="${contentId == content.id}">
+                <ul>
+                    <li><span th:text="${errorMessages}"/></li>
+                </ul>
+            </div>
+        </div>
         <!--コメント投稿欄-->
         <form method="post" action="/addComment" th:object="${formModel}">
             <div class="comment-area">

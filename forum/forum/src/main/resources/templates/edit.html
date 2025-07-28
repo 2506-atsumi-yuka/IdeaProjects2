@@ -9,6 +9,12 @@
 <div class="header-contents">
   <h2>編集</h2>
 </div>
+<!--エラーメッセージ -->
+<div class="error-massage">
+  <ul>
+    <li><span th:text="${errorMessages}"/></li>
+  </ul>
+</div>
 <div class="main-contents">
   <form th:action="@{/update/{id}(id=${formModel.id})}" th:object="${formModel}" th:method="put">
     <div class="form-area">

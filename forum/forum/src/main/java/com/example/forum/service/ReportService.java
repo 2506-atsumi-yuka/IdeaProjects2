@@ -39,9 +39,10 @@ public class ReportService {
             Date date = new Date();
             endDate = sdf.format(date);
         }
-        //Date型に変換
+
         Date start = null;
         Date end = null;
+        //String型→Date型に変換(parse)
         start = sdf.parse(startDate);
         end = sdf.parse(endDate);
         List<Report> results = reportRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(start, end);
